@@ -3,9 +3,12 @@ let io = null;
 
 exports.init = (server, options = {}) => {
   const { Server } = require('socket.io');
+  if (!process.env.CLIENT_URL) {
+    throw new Error("CLIENT_URL is not defined in environment variables");
+  }
   io = new Server(server, {
     cors: {
-      origin: process.env.CLIENT_URL || 'http://localhost:5173',
+      origin: process.env.CLIENT_URL,
       credentials: true
     },
     ...options
